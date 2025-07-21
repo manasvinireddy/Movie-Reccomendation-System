@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+<html>
+<head>
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  
+  </head>
+
+
+<div class="login-page">
+  <div class="form">
+	<form onsubmit="return validateLogin()" action="login.html" method="post">
+      <lottie-player src="https://assets4.lottiefiles.com/datafiles/XRVoUu3IX4sGWtiC3MPpFnJvZNq7lVWDCa8LSqgS/profile.json"  background="transparent"  speed="1"  style="justify-content: center;" loop  autoplay></lottie-player>
+      <input type="text" id="loginUsername" placeholder="&#xf007;  username"/>
+      <input type="password" id="loginPassword" placeholder="&#xf023;  password"/>
+      <i class="fas fa-eye" onclick="showPassword()"></i> 
+      <br>
+      <br>
+      <button type="submit">LOGIN</button>
+    </form>
+
+    <form class="login-form">
+      <button type="button" onclick="window.location.href='signup.html'">SIGN UP</button>
+    </form>
+  </div>
+</div>
+
+  <script>
+    function showPassword(){
+      var password = document.getElementById("password");
+      var icon = document.querySelector(".fas")
+
+      // ========== Checking type of password ===========
+      if(password.type === "password"){
+        password.type = "text";
+      }
+      else {
+        password.type = "password";
+      }
+    };
+// Function to validate login form
+function validateLogin() {
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    if (username.trim() === '' || password.trim() === '') {
+        alert('Please enter both username and password.');
+        return false;
+    }
+    // Regular expression pattern to match an email-like username
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(username)) {
+        alert('Please enter a valid email address as the username.');
+        return false;
+    }
+    if (password.length < 8) {
+        alert('Password must be at least 8 characters long.');
+        return false;
+    }
+    return true;
+}
+  </script>
+</body>
+</html>
+

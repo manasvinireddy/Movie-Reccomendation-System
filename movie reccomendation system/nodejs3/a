@@ -1,0 +1,37 @@
+# app.py
+from flask import Flask, request, jsonify, render_template
+import pandas as pd
+from scipy.spatial.distance import cdist
+import numpy as np
+
+app = Flask(__name__)
+
+# Replace the file path with your actual path
+excel_file_path = 'C:/Users/ATTELLI SANJAY KUMAR/Music/ALL CBPS/DV/agri1.csv'
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv(excel_file_path)
+
+# Route to serve your HTML file
+@app.route('/')
+def home():
+    return render_template('website.html')
+
+@app.route('/predict', methods=['POST'])
+def predict_crop():
+    input_values = request.json
+
+    # Calculate Euclidean distance between user input and dataset
+    distances = cdist(df[['Nitrogen', 'Phosphorus', 'Potasium', 'temperature', 'humidity', 'ph', 'rainfall']],
+                      np.array(list(input_values.values())).reshape(1, -1))
+
+    # Find the index with the minimum distance
+    min_distance_index = np.argmin(distances)
+
+    # Get the predicted crop for the minimum distance
+    predicted_crop = df.loc[min_distance_index, 'Crop']
+
+    return jsonify({'predictedCrop': predicted_crop})
+
+if __name__ == '__main__':
+    app.run(debug=True)
